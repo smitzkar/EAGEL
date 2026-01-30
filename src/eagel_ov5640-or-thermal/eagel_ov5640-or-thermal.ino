@@ -1,15 +1,23 @@
 //MARK: Select Camera (don't trust that the choosing already works)
-#define USE_THERMAL // connect to I2C (pins D4 (SDA) and D5 (SCL) on Xiao)
+//#define USE_THERMAL // connect to I2C (pins D4 (SDA) and D5 (SCL) on Xiao)
 //#define USE_OG_CAM
-//#define USE_OV5640
+#define USE_OV5640
 
-//MARK: Give it a name
-const char* HOSTNAME = "EAGEL_1";
+
+//MARK: === WIFI / OTA ===
+const int numNetworks = 2;
+const char* ssidList[] = {"SSID_hotspot",     "SSID_home"};
+const char* passList[] = {"PASSWORD_hotspot", "PASSWORD_home"};
+const char* HOSTNAME = "EAGEL_1"; 
+
 
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <ArduinoOTA.h>
 #include <FastLED.h>
+
+// Global alert flag (used by all camera modes)
+volatile bool thermalAlert = false;
 
 #ifdef USE_THERMAL
     #include <Wire.h>
@@ -23,7 +31,6 @@ const char* HOSTNAME = "EAGEL_1";
     #define TEMP_THRESHOLD 22 // for old threshold
     #define ALERT_DELTA 6.0 // for relative threshold
     #define SEND_RAW true  // set true to send float data (4 bytes × 64 = 256 bytes)
-    volatile bool thermalAlert = false; // Shared flag to signal high temperature detected
 #endif
 
 #ifdef USE_OV5640
@@ -43,17 +50,6 @@ const char* HOSTNAME = "EAGEL_1";
     #include "camera_pins.h"
     #include "app_httpd.h"
 #endif
-
-
-
-//MARK: === WIFI / OTA ===
-const char* ssidList[] = {"KarlPhone", "Healthy_Design_&_Sick_Machines"};
-const char* passList[] = {"Aldebaran", "Bakterien_und_Viren"};
-const int numNetworks = 2;
-// const char* HOSTNAME = "EAGEL_1";
-// const char* ssid = "KarlPhone";
-// const char* password = "Aldebaran";
-
 
 
 // === LED ===
@@ -111,12 +107,15 @@ void setup() {
     // OTA task - Core 0, higher priority
     xTaskCreatePinnedToCore(TaskOTA, "TaskOTA", 4096, NULL, 2, NULL, 0);
 
-    // // Camera task - Core 0, medium priority
-    // xTaskCreatePinnedToCore(TaskCamera, "TaskCamera", 8192, NULL, 1, NULL, 0);
+    #ifdef USE_OV5640
+        // Camera task - Core 0, medium priority
+        xTaskCreatePinnedToCore(TaskCamera, "TaskCamera", 8192, NULL, 1, NULL, 0);
+    #endif
 
-    // Thermal task - Core 0, medium priority (as replacement for Camera)
-    xTaskCreatePinnedToCore(TaskThermal, "TaskThermal", 4096, NULL, 1, NULL, 0);
-
+    #ifdef USE_THERMAL
+        // Thermal task - Core 0, medium priority (as replacement for Camera)
+        xTaskCreatePinnedToCore(TaskThermal, "TaskThermal", 4096, NULL, 1, NULL, 0);
+    #endif
 
     // LED task - Core 1, low priority
     xTaskCreatePinnedToCore(TaskLED, "TaskLED", 4096, NULL, 1, NULL, 1);

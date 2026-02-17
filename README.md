@@ -1,11 +1,11 @@
 # Welcome to EAGEL[^2]!  
 
-A simple DIY "drone"[^1] streaming either live camera or infrared feed using Seeedstudio's Xiao ESP32-S3 Sense. Part of the [TechTales exhibition at UNI_VERSUM.](https://www.lifolab.de/techtales). 
+A simple DIY "not-a-drone"[^1] streaming either live camera or infrared feed using Seeedstudio's Xiao ESP32-S3 Sense. Part of the [TechTales exhibition at UNI_VERSUM.](https://www.lifolab.de/techtales). 
 
 [^1]: "Technically" NOT considered a drone -> potentially skirts legal restrictions on where it can be flown (check your local restrictions)
 
 [^2]: Acronym: 	<ins>E</ins>AGEL 	<ins>A</ins>erostat, 	<ins>G</ins>iving 	<ins>E</ins>lectronics a 	<ins>L</ins>ift  
-English "eagle" homophone to German "Igel" = "hedgehog" 
+English "eagle" homophone to German "Igel" = "hedgehog"  
 What better animal to associate with a balloon-lifted aerial camera than a near-blind spiky little critter?
 
 ## Features 

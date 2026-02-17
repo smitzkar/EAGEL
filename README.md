@@ -61,9 +61,20 @@ Browser stuff ...
 
 ### Todo: -[] Pi setup for 
 
+## Summer School 2025
+
+The original pre-infrared version was used as the starting point to build on top of for the students participating in the [2025 CityLab Berlin's Summer School](https://citylab-berlin.org/de/blog/citylab-summer-school-2025-stadt-wald-labor/). 
+
+The results can be found here:  
+
+https://github.com/NurzhanSeitzhanov/Not-a-Drone_Big-Data
+
+https://github.com/thitrunganhnguyen/InTheWoods
 
 ## Links  
 
-Summer School results?  
+[Our website lifolab](https://www.lifolab.de)
+
+[Fachgebiet Nachrichtenübertragung an der Technischen Universität Berlin](https://www.tu.berlin/nue)
 
 
